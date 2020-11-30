@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,14 +18,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.model.Status;
+import com.cts.model.TempUser;
 import com.cts.model.Users;
 import com.cts.service.HelperService;
 import com.cts.service.UserService;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
+@Setter
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 public class UsersController {
 
 	@Autowired
@@ -33,10 +39,9 @@ public class UsersController {
 	private HelperService helperService;
 
 	@PostMapping("/users")
-	public ResponseEntity<Status> addNewUser(@Valid @RequestBody Users user, BindingResult bindingResult) {
+	public ResponseEntity<Status> addNewUser(@Valid @RequestBody TempUser user, BindingResult bindingResult) {
 
 		Status status = null;
-
 		if (bindingResult.hasErrors()) {
 			// data passed doesn't met the validation set at model class
 
@@ -50,7 +55,6 @@ public class UsersController {
 		}
 
 		status = userService.addNewUser(user);// save the user
-
 		if (status.getStatusCode() == 200)
 			return new ResponseEntity<Status>(status, HttpStatus.CREATED);
 		else
@@ -59,7 +63,7 @@ public class UsersController {
 	}
 
 	@PutMapping("/users/{userid}")
-	public ResponseEntity<Status> updatePassword(@Valid @RequestBody Users user, BindingResult bindingResult,
+	public ResponseEntity<Status> updatePassword(@Valid @RequestBody TempUser user, BindingResult bindingResult,
 			@PathVariable("userid") Long userId) {
 
 		Status status = null;
@@ -86,8 +90,12 @@ public class UsersController {
 	}
 
 	@PutMapping("/users/status/{status_id}")
-	public ResponseEntity<Status> blockAUser(@RequestBody Users user, @PathVariable("status_id") Integer statusId) {
+	public ResponseEntity<Status> blockAUser(@RequestBody TempUser user, @PathVariable("status_id") Integer statusId) {
 		return userService.changeStatusOfAUser(user, statusId);
 	}
-
+	
+	@GetMapping("/users/all")
+	public List<Users> getAllUsers(){
+		return this.userService.getAllUsers();
+	}
 }

@@ -1,17 +1,28 @@
 
 package com.cts.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-@Data
-@AllArgsConstructor
+@Getter
+@ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class VotesCountDetail {
+
+	public VotesCountDetail(Long totalNoOfVoters, Long totalNoOfVotersVoted) {
+		super();
+		this.totalNoOfVoters = totalNoOfVoters;
+		this.totalNoOfVotersVoted = totalNoOfVotersVoted;
+	}
+
+	public VotesCountDetail(Long totalNoOfVoters, Long totalNoOfVotersVoted, Double votingPercentage) {
+		super();
+		this.totalNoOfVoters = totalNoOfVoters;
+		this.totalNoOfVotersVoted = totalNoOfVotersVoted;
+		this.votingPercentage = votingPercentage;
+	}
 
 	@NonNull
 	private Long totalNoOfVoters;
@@ -19,5 +30,17 @@ public class VotesCountDetail {
 	private Long totalNoOfVotersVoted;
 
 	private Double votingPercentage;
+
+	public void setTotalNoOfVoters(Long totalNoOfVoters) {
+		this.totalNoOfVoters = totalNoOfVoters;
+	}
+
+	public void setTotalNoOfVotersVoted(Long totalNoOfVotersVoted) {
+		this.totalNoOfVotersVoted = totalNoOfVotersVoted;
+	}
+
+	public void setVotingPercentage(Double votingPercentage) {
+		this.votingPercentage = votingPercentage;
+	}
 
 }

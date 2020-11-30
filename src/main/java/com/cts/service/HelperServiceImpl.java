@@ -19,29 +19,39 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class HelperServiceImpl implements HelperService{
+public class HelperServiceImpl implements HelperService {
 
 	@Autowired
 	private UserRepository userRepository;
 
 	public boolean checkUniquenessOfEmailId(Users user) {
 		boolean flag = false;
-		if (userRepository.findByEmail(user.getEmail()) == null)
-			flag = true;
+		
+		if (user != null) {
+			user=userRepository.findByEmail(user.getEmail()) ;
+			
+			if (user== null)
+				flag = true;
+		}else {
+			throw new NullPointerException();
+		}
 		return flag;
 	}
 
 	// function to get all the field errors
 	public List<String> getAllError(BindingResult bindingResult) {
-		
-		List<String> errors = new ArrayList<String>();
 
-		for (ObjectError error : bindingResult.getAllErrors()) {
-			errors.add(error.getDefaultMessage());
-		} // getting all field errors
+		List<String> errors = null;
 		
-		log.info("total field errors {}", errors.size());
+		if (bindingResult != null) {
+			errors = new ArrayList<String>();
+			for (ObjectError error : bindingResult.getAllErrors()) {
+				errors.add(error.getDefaultMessage());
+			} // getting all field errors
+
+			log.info("total field errors {}", errors.size());
 		
+		}
 		return errors;
 	}
 
@@ -52,9 +62,7 @@ public class HelperServiceImpl implements HelperService{
 				new CharacterRule(EnglishCharacterData.LowerCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1));
 
 		PasswordGenerator generator = new PasswordGenerator();
-		String password = generator.generatePassword(8, rules);
-
-		return password;
+		return generator.generatePassword(8, rules);
 
 	}
 }

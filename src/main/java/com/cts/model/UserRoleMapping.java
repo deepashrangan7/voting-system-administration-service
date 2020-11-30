@@ -6,20 +6,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
+import lombok.ToString;
 
 @Entity
 @Table(name = "user_role_mapping")
 @NoArgsConstructor
-@AllArgsConstructor
-@RequiredArgsConstructor
-@Data
+@Getter
+@ToString
 public class UserRoleMapping {
+
+	public UserRoleMapping(Integer roleId, String role) {
+		super();
+		this.roleId = roleId;
+		this.role = role;
+	}
+
+	public UserRoleMapping(Integer id, Integer roleId, String role) {
+		super();
+		this.id = id;
+		this.roleId = roleId;
+		this.role = role;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +43,17 @@ public class UserRoleMapping {
 	@Column(nullable = false)
 	@NonNull
 	private String role;
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 }

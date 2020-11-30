@@ -48,10 +48,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 		try {
 			token = request.getHeader("Authorization").substring(7);
-			flag = authenticationFeign.validateToken(request.getHeader("Authorization").toString());
+			flag = authenticationFeign.validateToken(request.getHeader("Authorization"));
 
 		} catch (Exception e) {
-			System.out.println("error ocuured " + e.getMessage());
+			log.error("error ocuured {}" , e.getMessage());
 		}
 		if (flag) {
 

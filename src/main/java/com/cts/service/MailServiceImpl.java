@@ -11,10 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class MailServiceImpl implements MailService{
-	
+public class MailServiceImpl implements MailService {
+
 	@Autowired
 	private JavaMailSender javaMailSender;
+
+	public MailServiceImpl() {
+	}
+
+	public MailServiceImpl(JavaMailSender javaMailSender) {
+		this.javaMailSender = javaMailSender;
+	}
 
 	private String from = "deepashdeepika77@gmail.com";
 
@@ -24,7 +31,6 @@ public class MailServiceImpl implements MailService{
 
 		mailMessage.setSubject("Account Created Successfully");
 		mailMessage.setFrom(from);
-
 		try {
 
 			String message = "Hello " + user.getName()
@@ -38,10 +44,12 @@ public class MailServiceImpl implements MailService{
 			javaMailSender.send(mailMessage);
 
 			return true;
+
 		} catch (Exception e) {
 			log.error("error while sending mail  {}", e.getMessage());
+			return false;
 		}
-		return false;
+
 	}
 
 }
