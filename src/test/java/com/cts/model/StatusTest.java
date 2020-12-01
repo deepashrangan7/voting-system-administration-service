@@ -14,6 +14,7 @@ public class StatusTest {
 		Status status = new Status(200, "OK");
 		assertEquals(200, status.getStatusCode());
 	}
+
 	@Test
 	void toStringTest() {
 		Status status = new Status(200, "OK");
@@ -31,7 +32,7 @@ public class StatusTest {
 	@Test
 	void errorsTest() {
 		Status status = new Status(200, "ok", null);
-
+		status.setFieldErrors(null);
 		assertNull(status.getFieldErrors());
 	}
 }

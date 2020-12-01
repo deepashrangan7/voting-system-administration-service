@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 import com.cts.model.Status;
 import com.cts.model.TempUser;
@@ -64,16 +63,44 @@ class UserControllerTest {
 		assertEquals(HttpStatus.OK, uc.blockAUser(user, 1).getStatusCode());
 	}
 
-//	@Test
-//	void updatePasswordTest() {
-//		TempUser tu = new TempUser();
-//		tu.setPassword("abcd");
-//		when(bindingResult.hasFieldErrors("password")).thenReturn(true);
-//		FieldError fe=new FieldError("password","password", "yes");
-//		when(bindingResult.getFieldError("password")).thenReturn(fe);
-//		when(fe.getDefaultMessage()).thenReturn("yes");
-//		UsersController uc = new UsersController();
-//		assertEquals(HttpStatus.BAD_REQUEST, uc.updatePassword(tu, bindingResult, Long.valueOf(1)));
-//	}
+	@Test
+	void updatePasswordTestStatusOk() {
+		UsersController uc = new UsersController();
+		TempUser user = new TempUser();
+		when(bindingResult.hasFieldErrors("password")).thenReturn(false);
+		when(userService.updatePassword(user, Long.valueOf(1))).thenReturn(new Status(200, "ok"));
+		uc.setUserService(userService);
+		assertEquals(HttpStatus.OK, uc.updatePassword(user, bindingResult, Long.valueOf(1)).getStatusCode());
+	}
+
+	@Test
+	void addUserTestStatusOk() {
+		UsersController uc = new UsersController();
+		TempUser user = new TempUser();
+		when(bindingResult.hasErrors()).thenReturn(false);
+		when(userService.addNewUser(user)).thenReturn(new Status(200, "ok"));
+		uc.setUserService(userService);
+		assertEquals(HttpStatus.CREATED, uc.addNewUser(user, bindingResult).getStatusCode());
+	}
+
+	@Test
+	void addUserTestStatusBadRequest() {
+		UsersController uc = new UsersController();
+		TempUser user = new TempUser();
+		when(bindingResult.hasErrors()).thenReturn(false);
+		when(userService.addNewUser(user)).thenReturn(new Status(404, "bad_request"));
+		uc.setUserService(userService);
+		assertEquals(HttpStatus.BAD_REQUEST, uc.addNewUser(user, bindingResult).getStatusCode());
+	}
+
+	@Test
+	void updatePasswordTestStatusBadRequest() {
+		UsersController uc = new UsersController();
+		TempUser user = new TempUser();
+		when(bindingResult.hasFieldErrors("password")).thenReturn(false);
+		when(userService.updatePassword(user, Long.valueOf(1))).thenReturn(new Status(404, "bad_request"));
+		uc.setUserService(userService);
+		assertEquals(HttpStatus.BAD_REQUEST, uc.updatePassword(user, bindingResult, Long.valueOf(1)).getStatusCode());
+	}
 
 }

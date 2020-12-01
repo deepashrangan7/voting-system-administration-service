@@ -1,8 +1,12 @@
 package com.cts.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -57,9 +61,28 @@ class SeedServiceTest {
 		Party party = null;
 
 		when(partyRepo.save(party)).thenReturn(party);
-		
+
 		assertNull(partyRepo.save(party));
 
+	}
+
+	@Test
+	void allDataTest() {
+		List<UserRoleMapping> userRole = new ArrayList<UserRoleMapping>();
+		userRole.add(new UserRoleMapping(0, "voter"));
+		userRole.add(new UserRoleMapping(1, "candidate"));
+		userRole.add(new UserRoleMapping(2, "admin"));
+		List<Party> parties = new ArrayList<Party>();
+		parties.add(new Party("A"));
+		parties.add(new Party("B"));
+		parties.add(new Party("C"));
+		parties.add(new Party("D"));
+		when(seedRepo.saveAll(userRole)).thenReturn(userRole);
+		when(partyRepo.saveAll(parties)).thenReturn(parties);
+		SeedServiceImpl si = new SeedServiceImpl();
+		si.setPartyRepo(partyRepo);
+		si.setSeedRepo(seedRepo);
+		assertEquals("data seeded successfully", si.seedData());
 	}
 
 }

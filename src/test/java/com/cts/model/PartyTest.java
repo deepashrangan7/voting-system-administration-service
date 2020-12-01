@@ -13,6 +13,7 @@ class PartyTest {
 		Party party = new Party("A");
 		assertEquals("A", party.getPartyName());
 	}
+
 	@Test
 	void partyToStringTest() {
 		Party party = new Party("A");
@@ -22,12 +23,14 @@ class PartyTest {
 	@Test
 	void partyIdIest() {
 		Party party = new Party(Long.valueOf(1), "A", null);
+		party.setPartyId(Long.valueOf(1));
 		assertEquals(1, party.getPartyId());
 	}
 
 	@Test
 	void partyCandidatesIest() {
 		Party party = new Party(Long.valueOf(1), "A", null);
+		party.setCandidates(null);
 		assertNull(party.getCandidates());
 	}
 }

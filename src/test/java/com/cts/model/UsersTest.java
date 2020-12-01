@@ -42,8 +42,8 @@ class UsersTest {
 	@Test
 	void passwordTest() {
 		Users user = new Users();
-		user.setName("deepash");
-		assertEquals("deepash", user.getName());
+		user.setPassword("deepash");
+		assertEquals("deepash", user.getPassword());
 	}
 
 	@Test

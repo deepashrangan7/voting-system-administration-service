@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class SeedServiceImpl implements SeedService{
+public class SeedServiceImpl implements SeedService {
 
 	@Autowired
 	private SeedRepository seedRepo;
@@ -37,19 +37,23 @@ public class SeedServiceImpl implements SeedService{
 		parties.add(new Party("C"));
 		parties.add(new Party("D"));
 		// adding some parties initially
-		try {
-			seedRepo.deleteAll();// clear the database
-			seedRepo.saveAll(userRole);
 
-			partyRepo.deleteAll();
-			partyRepo.saveAll(parties);
+		seedRepo.deleteAll();// clear the database
+		seedRepo.saveAll(userRole);
 
-			log.info("data seeded");
-		} catch (Exception e) {
+		partyRepo.deleteAll();
+		partyRepo.saveAll(parties);
 
-			log.info("exception occured while updating seed data");
-			return "Unable to update seed";
-		}
+		log.info("data seeded");
+
 		return "data seeded successfully";
+	}
+
+	public void setSeedRepo(SeedRepository seedRepo) {
+		this.seedRepo = seedRepo;
+	}
+
+	public void setPartyRepo(PartyRepository partyRepo) {
+		this.partyRepo = partyRepo;
 	}
 }

@@ -11,6 +11,7 @@ class UserRoleMappingTest {
 	@Test
 	void roleIdTest() {
 		UserRoleMapping userRoleMapping = new UserRoleMapping(1, "A");
+		userRoleMapping.setRoleId(1);
 		assertEquals(1, userRoleMapping.getRoleId());
 
 	}
@@ -41,6 +42,7 @@ class UserRoleMappingTest {
 	@Test
 	void roleTest() {
 		UserRoleMapping userRoleMapping = new UserRoleMapping(1, "A");
+		userRoleMapping.setRole("A");
 		assertEquals("A", userRoleMapping.getRole());
 
 	}

@@ -10,10 +10,10 @@ class VotingSystemAdministrationServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
-		String arr[]= {"deepash","rangan"};
+		String arr[] = { "deepash", "rangan" };
 		VotingSystemAdministrationServiceApplication.main(arr);
 		assertTrue(true);
-		
+
 	}
 
 }

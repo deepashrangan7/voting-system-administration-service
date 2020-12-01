@@ -16,23 +16,32 @@ import com.cts.model.Users;
 import com.cts.repository.PartyRepository;
 import com.cts.repository.UserRepository;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 @NoArgsConstructor
-@AllArgsConstructor
-@RequiredArgsConstructor
-@Data
+
 public class UserServiceImpl implements UserService {
 
-	@Autowired
+	public UserServiceImpl(HelperService helperService, MailService mailService) {
+		super();
+		this.helperService = helperService;
+		this.mailService = mailService;
+	}
 
+	public UserServiceImpl(UserRepository userRepository, HelperService helperService, PartyRepository partyRepository,
+			MailService mailService) {
+		super();
+		this.userRepository = userRepository;
+		this.helperService = helperService;
+		this.partyRepository = partyRepository;
+		this.mailService = mailService;
+	}
+
+	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	@NonNull
@@ -47,21 +56,21 @@ public class UserServiceImpl implements UserService {
 	public Status addNewUser(TempUser tempUser) {
 		try {
 			String partyFailureMessage = "Candidate party is not correctly added please enter valid party details";
-		
+
 			if (tempUser != null) {
-			
+
 				Users user = new Users();
 				user.setEmail(tempUser.getEmail());
 				user.setName(tempUser.getName());
 				user.setRole(tempUser.getRole());
 				// check uniqueness of email
 				if (helperService.checkUniquenessOfEmailId(user)) {
-					
+
 					if (tempUser.getRole() == 1 && tempUser.getParty() != null) {// if candidate set the party
 
 						user.setParty(partyRepository.findByPartyName(tempUser.getParty().getPartyName().trim()));
 						// mapping the party
-						
+
 						if (user.getParty() == null)
 							return new Status(400, partyFailureMessage);
 
@@ -72,7 +81,7 @@ public class UserServiceImpl implements UserService {
 					user.setEmail(user.getEmail().trim());
 					user.setName(user.getName().trim());
 					String password = helperService.generateRandomPassword().trim();// setting random password
-					
+
 					user.setPassword(password);
 					user = userRepository.save(user);
 					// save the user
@@ -159,9 +168,13 @@ public class UserServiceImpl implements UserService {
 		return new ResponseEntity<Status>(status, httpStatus);
 
 	}
-	
-	public List<Users> getAllUsers(){
+
+	public List<Users> getAllUsers() {
 		return userRepository.findByRoleNot(2);
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 }

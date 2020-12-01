@@ -22,7 +22,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.cors().disable();
-		http.csrf().disable().authorizeRequests().antMatchers("/users").permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/users").permitAll().antMatchers("/swagger-ui.html").permitAll()
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
 				.exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

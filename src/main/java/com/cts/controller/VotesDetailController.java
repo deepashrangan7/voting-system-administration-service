@@ -29,13 +29,18 @@ public class VotesDetailController {
 	}
 
 	@GetMapping("/votedetails/{candidate_id}")
-	public List<Users> votersForACandidate(@RequestHeader("Authorization")String token,@PathVariable("candidate_id") Long candidateId) {
-		return votingDetailService.getVotersOfACandidate(token,candidateId);
+	public List<Users> votersForACandidate(@RequestHeader("Authorization") String token,
+			@PathVariable("candidate_id") Long candidateId) {
+		return votingDetailService.getVotersOfACandidate(token, candidateId);
 	}
 
 	@GetMapping("/votedetails")
-	public List<VotesDetail> getVotesDetails(@RequestHeader("Authorization")String token) {
+	public List<VotesDetail> getVotesDetails(@RequestHeader("Authorization") String token) {
 		return votingDetailService.getAllCandidatesVotes(token);
 	}
-	
+
+	public void setVotingDetailService(VotingDetailService votingDetailService) {
+		this.votingDetailService = votingDetailService;
+	}
+
 }

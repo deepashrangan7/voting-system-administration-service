@@ -23,12 +23,10 @@ import com.cts.model.Users;
 import com.cts.service.HelperService;
 import com.cts.service.UserService;
 
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@Setter
 @CrossOrigin(allowedHeaders = "*", origins = "*")
 public class UsersController {
 
@@ -97,5 +95,9 @@ public class UsersController {
 	@GetMapping("/users/all")
 	public List<Users> getAllUsers(){
 		return this.userService.getAllUsers();
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 }

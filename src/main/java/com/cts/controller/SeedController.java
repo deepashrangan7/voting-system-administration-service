@@ -21,4 +21,9 @@ public class SeedController {
 		return seedService.seedData();
 
 	}
+
+	public void setSeedService(SeedService seedService) {
+		this.seedService = seedService;
+	}
+	
 }
